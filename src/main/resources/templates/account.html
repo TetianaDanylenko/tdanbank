@@ -2,9 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Account</title>
+    <title>Bank Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/main.css}">
+    <style>
+        #balance-text {
+            margin: 25px 0;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
-<h1> ACCOUNT </h1>>
+<main>
+    <!-- Account holder info -->
+    <h2 th:inline="text">Bank account: [[${bankAccount.iban}]]</h2>
+    <p th:inline="text">Owner: [[${bankAccount.user.username}]]</p>
+    <p th:inline="text" id="balance-text">Account balance: [[${account.balance}]]€</p>
+    <!-- Overview -->
+
+    <!-- Money transfer -->
+    <div class="container">
+        <h3 class="title">Transfer funds</h3>
+        <p class="form-error main" th:if="${(param.transferFail != null) and (param.transferFail[0] == 'true')}">Transfer failed</p>
+        <form th:action="@{/transfermoney}" th:method="POST">
+            <div>
+                <label for="to">Transfer to</label>
+                <input type="text" name="receiver" required />
+            </div>
+            <input type="hidden" name="idFrom" th:value="${bankAccount.id}" />
+            <div>
+                <label for="amount">Amount</label>
+                <input type="number" name="amount" min=".01" step=".01" required />
+                <p class="form-error" th:if="${transferFailAmount != null}" th:text="${transferFailAmount}"></p>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <!-- Update balance -->
+    <div class="container">
+        <h3 class="title">Update balance</h3>
+        <form th:action="@{/updatebankaccountbalance}" th:method="POST">
+            <div>
+                <label for="balance">Balance</label>
+                <input type="number" name="balance" min="0" step=".01" required />
+            </div>
+            <input type="hidden" name="bankAccountId" th:value="${bankAccount.id}" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Transaction history -->
+    <div class="container">
+        <h3 class="title">Transaction history</h3>
+
+    </div>
+
+</main>
 </body>
 </html>

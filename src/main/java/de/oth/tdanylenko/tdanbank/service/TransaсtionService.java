@@ -10,10 +10,14 @@ import de.oth.tdanylenko.tdanbank.repository.AccountRepository;
 import de.oth.tdanylenko.tdanbank.repository.TransactionRepository;
 import de.oth.tdanylenko.tdanbank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,4 +63,24 @@ public class TransaсtionService {
         transactionRepository.save(transaction);
         return this.toDto(transaction);
     }
+
+
+    @Transactional
+    public void transferMoney(long to, long from, double amount, RedirectAttributes redirectAttributes) {
+        Account recepient = accountRepository.findById(to).orElse(null);
+        Account sender = accountRepository.findById(from).orElse(null);
+        if (recepient == null || sender == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account does not exist");
+        }
+        if (sender.getBalance() - amount < 0) {
+            redirectAttributes.addAttribute("transferFail", true);
+            redirectAttributes.addFlashAttribute("transferFailAmount", "Not enough money on your account");
+            return;
+        }
+    }
+    public List<Transaction> getBankAccountTransactionHistory(Account bankAccount) {
+      return null;
+    }
+
+
 }

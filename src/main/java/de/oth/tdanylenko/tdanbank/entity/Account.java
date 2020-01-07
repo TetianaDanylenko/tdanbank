@@ -12,32 +12,30 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Enumerated(EnumType.STRING)
-    private AccountStatus status;
-    private String currency;
-    private long balance;
-    @ElementCollection
-    private List<Tan> tanList;
-    private String IBAN;
-    boolean isLoggedIn;
-    @ElementCollection
-    private List<Transaction> transactionHistory;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userID", referencedColumnName = "id")
     private User user;
-
+    private double balance;
+    private String currency;
+    @ElementCollection
+    private List<Tan> tanList;
+    private String IBAN;
+    @ElementCollection
+    private List<Transaction> transactionHistory;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
     public Account () {
         super();
     }
-    public Account(AccountStatus status, String currency, long balance, List<Tan> tanList, String IBAN, boolean isLoggedIn, List<Transaction> transactionHistory, User user) {
-        this.status = status;
-        this.currency = currency;
+
+    public Account(User user, double balance, String currency, List<Tan> tanList, String IBAN, List<Transaction> transactionHistory, AccountStatus status) {
+        this.user = user;
         this.balance = balance;
+        this.currency = currency;
         this.tanList = tanList;
         this.IBAN = IBAN;
-        this.isLoggedIn = isLoggedIn;
         this.transactionHistory = transactionHistory;
-        this.user = user;
+        this.status = status;
     }
 
     public long getId() {
@@ -64,11 +62,11 @@ public class Account {
         this.currency = currency;
     }
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -86,14 +84,6 @@ public class Account {
 
     public void setIBAN(String IBAN) {
         this.IBAN = IBAN;
-    }
-
-    public boolean isLoggedIn() {
-        return isLoggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
     }
 
     public List<Transaction> getTransactionHistory() {
