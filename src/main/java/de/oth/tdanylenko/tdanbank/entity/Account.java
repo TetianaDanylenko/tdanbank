@@ -19,7 +19,7 @@ public class Account {
     private String currency;
     @ElementCollection
     private List<Tan> tanList;
-    private String IBAN;
+    private String iban;
     @ElementCollection
     private List<Transaction> transactionHistory;
     @Enumerated(EnumType.STRING)
@@ -28,12 +28,12 @@ public class Account {
         super();
     }
 
-    public Account(User user, double balance, String currency, List<Tan> tanList, String IBAN, List<Transaction> transactionHistory, AccountStatus status) {
+    public Account(User user, double balance, String currency, List<Tan> tanList, String iban, List<Transaction> transactionHistory, AccountStatus status) {
         this.user = user;
         this.balance = balance;
         this.currency = currency;
         this.tanList = tanList;
-        this.IBAN = IBAN;
+        this.iban = iban;
         this.transactionHistory = transactionHistory;
         this.status = status;
     }
@@ -78,12 +78,12 @@ public class Account {
         this.tanList = tanList;
     }
 
-    public String getIBAN() {
-        return IBAN;
+    public String getiban() {
+        return iban;
     }
 
-    public void setIBAN(String IBAN) {
-        this.IBAN = IBAN;
+    public void setiban(String iban) {
+        this.iban = iban;
     }
 
     public List<Transaction> getTransactionHistory() {

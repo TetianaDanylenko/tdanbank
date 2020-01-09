@@ -25,6 +25,25 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <h3 class="ctitle">Create a new bank account</h3>
+        <p class="form-error main" th:if="${(param.bankAccountCreateFail != null) and (param.bankAccountCreateFail[0] == 'true')}">Bank acount
+            creation did not succeed.</p>
+        <form th:action="@{/dashboard/create/account}" th:method="POST">
+            <div>
+                <label for="iban">IBAN</label>
+                <input type="text" name="iban" required />
+                <p class="form-error" th:if="${bankAccountCreateFailIban != null}" th:text="${bankAccountCreateFailIban}"></p>
+            </div>
+            <div>
+                <label for="balance">Balance</label>
+                <input type="number" name="balance" min="0" step=".01" required />
+            </div>
+            <input type="text" name="ownerUsername"/>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
 
 </div>
 </body>

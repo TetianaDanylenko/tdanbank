@@ -26,13 +26,12 @@ public class DashboardController {
         log.info("dashboard");
         return "dashboard";
     }
-    @RequestMapping(value = "/dashboard/update/user", method = RequestMethod.GET)
-    public String updateUser(Model model) {
-        log.info("updateUser");
+    @RequestMapping(value = "/dashboard/create/account", method = RequestMethod.GET)
+    public String createAccount(Model model) {
+        log.info("create");
         return "updateuser";
     }
 
-    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/dashboard/create/account", method = RequestMethod.POST)
     public String createBankAccount(@RequestParam String iban, @RequestParam String ownerUsername, @RequestParam double balance, RedirectAttributes redirectAttributes) {
         if (iban.trim().isEmpty() || ownerUsername.isEmpty()) {
@@ -42,6 +41,8 @@ public class DashboardController {
             throw new IllegalArgumentException("Balance cannot be negative!");
         }
         Account bankAccount = accountService.createBankAccount(iban, ownerUsername, balance, redirectAttributes);
-        return "redirect:/account/" + bankAccount.getId();
+        log.info("created");
+        log.info(iban);
+        return "redirect:/dashboard/";
     }
 }

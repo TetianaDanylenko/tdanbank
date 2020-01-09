@@ -1,24 +1,25 @@
 package de.oth.tdanylenko.tdanbank.controller;
 
 import de.oth.tdanylenko.tdanbank.entity.*;
+import de.oth.tdanylenko.tdanbank.repository.AccountRepository;
 import de.oth.tdanylenko.tdanbank.repository.RolesRepository;
 import de.oth.tdanylenko.tdanbank.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class LoginController {
     private static final Logger log = LogManager.getLogger(LoginController.class);
 @Autowired
 private UserRepository userRepo;
-
+    @Autowired
+    private AccountRepository accountRepo;
 @Autowired
 private RolesRepository rolesRepo;
      public static boolean isAdmin = false;
@@ -70,7 +72,7 @@ private ArrayList <RoleTypes> test;
  if(collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_MANAGER))) {
      return "redirect:/dashboard";
  } else if (collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_USER))) {
-     return "redirect:/account";
+     return "redirect:/account/" + accountRepo.getAccountByUser(java.util.Optional.of(loggedInUser)).getUser().getUsername();
  } else
      return "redirect:/account";
     }
@@ -81,3 +83,4 @@ private ArrayList <RoleTypes> test;
         }
     }
 }
+

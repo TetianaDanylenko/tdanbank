@@ -36,7 +36,7 @@ public class TransactionController {
         return transactionService.save(transactionDto);
     }
 
-    @GetMapping("/transaction/{transactionId}")
+    @RequestMapping("/transaction/{transactionId}")
     public @ResponseBody TransactionDTO getTransaction(@PathVariable final Long transactionId) {
         final Optional<Transaction> transaction = transactionRepository.findById(transactionId);
         if (transaction.isPresent()) {

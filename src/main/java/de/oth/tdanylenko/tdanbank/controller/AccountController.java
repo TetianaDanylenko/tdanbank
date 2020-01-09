@@ -1,6 +1,7 @@
 package de.oth.tdanylenko.tdanbank.controller;
 
 import de.oth.tdanylenko.tdanbank.entity.Account;
+import de.oth.tdanylenko.tdanbank.entity.User;
 import de.oth.tdanylenko.tdanbank.repository.AccountRepository;
 import de.oth.tdanylenko.tdanbank.repository.UserRepository;
 import de.oth.tdanylenko.tdanbank.service.AccountService;
@@ -10,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,16 +39,17 @@ public class AccountController {
         log.info("test");
         return "account";
     }
-    @GetMapping("/bankaccount/{id}")
-    public String viewBankAccount(@PathVariable long id, Model model) {
-        Account bankAccount = accountRepo.findById(id).orElse(null);
+
+    @GetMapping("/account/{username}")
+    public String viewUserAccount(@PathVariable String username, Model model) {
+        log.info("entered accountcontroller");
+        Account bankAccount = accountRepo.getAccountByUserUsername(username);
         if (bankAccount == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
         }
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("transactionHistory", transaсtionService.getBankAccountTransactionHistory(bankAccount));
-        model.addAttribute("bankAccounts", accountRepo.findAllByIdNot(bankAccount.getId()));
-        return "bankaccount";
+        model.addAttribute("iban", bankAccount.getiban());
+        return "account";
     }
-
 }

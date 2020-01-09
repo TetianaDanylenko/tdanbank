@@ -51,6 +51,7 @@ public class AccountService implements UserDetailsService {
         if (owner == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");
         }
+        //TODO check if customer already has an account
         if (accountRepo.findByIbanIgnoreCase(iban) != null) {
             redirectAttributes.addAttribute("bankAccountCreateFail", true);
             redirectAttributes.addFlashAttribute("bankAccountCreateFailReasonIban", "IBAN was already used!");

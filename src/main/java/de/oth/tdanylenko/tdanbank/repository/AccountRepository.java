@@ -11,4 +11,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Account getAccountByUser(Optional<User> user);
     Account findByIbanIgnoreCase(String iban);
     Account findAllByIdNot(long id);
+    Account getAccountByUserUsername(String username);
 }

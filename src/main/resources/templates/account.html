@@ -15,9 +15,9 @@
 <body>
 <main>
     <!-- Account holder info -->
-    <h2 th:inline="text">Bank account: [[${bankAccount.iban}]]</h2>
+    <h2 th:inline="text">Bank account: [[${iban}]]</h2>
     <p th:inline="text">Owner: [[${bankAccount.user.username}]]</p>
-    <p th:inline="text" id="balance-text">Account balance: [[${account.balance}]]€</p>
+    <p th:inline="text" id="balance-text">Account balance: [[${bankAccount.balance}]]€</p>
     <!-- Overview -->
 
     <!-- Money transfer -->
