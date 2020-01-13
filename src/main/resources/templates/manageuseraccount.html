@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update user</title>
+    <style>
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1>Manager's panel</h1>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <h3 class="ctitle">Create a new user</h3>
+            <form th:action="@{/dashboard/create/user}" th:method="POST">
+                <div>
+                    <label for="firstName">Vorname</label>
+                    <input type="text" name="firstName"/>
+                </div>
+                <div>
+                    <label for="lastName">Nachname</label>
+                    <input type="text" name="lastName"/>
+                </div>
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" name="usersName"/>
+                </div>
+                <div>
+                    <label for="phone">Handynummer</label>
+                    <input type="text" name="phone"/>
+                </div>
+                <div>
+                    <label for="dateOfBirth">Geburtsdatum</label>
+                    <input type="date" name="dateOfBirth" required />
+                </div>
+                <div>
+                    <label for="password">Passwort</label>
+                    <input type="text" name="password"/>
+                    <button type="submit">Submit</button>
+                </div>
+                <div>
+                    <label for="street">Straße</label>
+                    <input type="text" name="street"/>
+                </div>
+                <div>
+                    <label for="streetAddition">Straße(optional)</label>
+                    <input type="text" name="streetAddition"/>
+                </div>
+                <div>
+                    <label for="houseNr">Hausnr</label>
+                    <input type="number" name="houseNr"/>
+                </div>
+                <div>
+                    <label for="city">Stadt</label>
+                    <input type="text" name="city"/>
+                </div>
+                <div>
+                    <label for="zip">ZIP</label>
+                    <input type="text" name="zip"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
