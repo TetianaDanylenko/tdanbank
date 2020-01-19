@@ -34,19 +34,19 @@ public class DataLoader implements ApplicationRunner {
         SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
         Date date1 = dateformat.parse("17/07/1989");
         Date date2 = dateformat.parse("12/01/1983");
-        Roles role1 = new Roles(RoleTypes.ROLE_MANAGER);
+        Roles managerRole = new Roles(RoleTypes.ROLE_MANAGER);
 /*        if (rolesRepo.findByName(RoleTypes.ROLE_MANAGER) == null) {
             rolesRepo.save(role1);
         }*/
-        Roles role2 = new Roles(RoleTypes.ROLE_USER);
+        Roles userRole = new Roles(RoleTypes.ROLE_USER);
      /*   if (rolesRepo.findByName(RoleTypes.ROLE_USER) == null) {
             rolesRepo.save(role2);
         }*/
-        User user1 = new User("Gerald", "of Rivia", "user1234", "1234", add1, Arrays.asList(role1), "gerald@gmail.com", "+49065267474", date1);
+        User user1 = new User("Gerald", "of Rivia", "user1234", "1234", add1, Arrays.asList(managerRole), "gerald@gmail.com", "+49065267474", date1);
         if (userRepo.getUserByUsername("user1234") == null) {
             account.createCustomer(user1);
         }
-        User user2 = new User("Yennefer", "of Vengerberg", "user4321", "4321", add2, Arrays.asList(role2), "gerald@gmail.com", "+49065267474", date2);
+        User user2 = new User("Yennefer", "of Vengerberg", "user4321", "4321", add2, Arrays.asList(userRole), "gerald@gmail.com", "+49065267474", date2);
         if (userRepo.getUserByUsername("user4321") == null) {
             account.createCustomer(user2);
         }

@@ -70,7 +70,7 @@ private RolesRepository rolesRepo;
                                           Date dateOfBirth, String street,
                                           String streetAddition, int houseNr, String city, String zip, RedirectAttributes redirectAttributes) {
 
-        Roles role = new Roles(RoleTypes.ROLE_USER);
+        Roles role =  rolesRepo.findByName(RoleTypes.ROLE_USER);
         Address address= new Address( street, streetAddition, houseNr, city, zip);
         User user = new User (firstname, lastname, username, password, address, Arrays.asList(role), mail, phone, dateOfBirth);
         if (userRepo.findByUsernameIgnoreCase(username) != null) {
