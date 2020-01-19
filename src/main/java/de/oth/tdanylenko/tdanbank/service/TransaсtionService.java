@@ -93,9 +93,9 @@ public class TransaсtionService implements TransactionServiceIF{
         if(sender!=null){
             sender.getTransactionHistory().add(transaction);
         }
-/*        if(recipient!=null){
+     if(recipient!=null){
             recipient.getTransactionHistory().add(transaction);
-        }*/
+        }
           accountRepository.save(sender);
         List<Transaction> test= sender.getTransactionHistory();
         test.forEach(t->log.info(t.toString()));

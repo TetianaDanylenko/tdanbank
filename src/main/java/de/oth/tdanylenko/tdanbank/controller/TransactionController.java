@@ -40,15 +40,8 @@ public class TransactionController {
     @RequestMapping(value = "/api/pptransaction/getfunds",  consumes = "application/json", produces =
             "application/json", method = RequestMethod.POST)
     public ResponseEntity<TransactionDTO> addTransactionFromPayPal(@RequestBody(required = false) TransactionDTO transactionDto) {
-
-        TransactionDTO test = transactionService.directDebit(transactionDto);
-        log.info("end");
-        log.info(test);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        //responseHeaders.setLocation(location);
-     //   responseHeaders.set("MyResponseHeader", "MyValue");
-        return new ResponseEntity<>(test, HttpStatus.CREATED);
-      //  return new ResponseEntity<String>("Transaction succeded", HttpStatus.OK);
+        TransactionDTO transaction = transactionService.directDebit(transactionDto);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 
     @RequestMapping("/api/pptransaction/{transactionId}")

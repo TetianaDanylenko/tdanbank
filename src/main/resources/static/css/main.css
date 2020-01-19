@@ -11,6 +11,9 @@ main {
     margin: 50px auto 0;
     color: black;
 }
+.account-form-style label {
+    display: flex;
+}
 .column {
     float: left;
     width: 50%;
@@ -50,30 +53,6 @@ header {
     font-size: .95rem;
 }
 
-#header-items {
-    display: flex;
-    flex-wrap: wrap-reverse;
-    align-items: center;
-}
-
-.header-button {
-    margin: 4px 5px;
-}
-
-#app-title {
-    padding: 0 5px;
-}
-
-form input,
-form select {
-    margin: 5px 0;
-    min-width: 250px;
-    box-sizing: border-box;
-}
-
-form label {
-    display: block;
-}
 
 .form-error {
     color: #D55246;
@@ -88,33 +67,4 @@ form label {
     margin: 30px 0;
     padding: 10px;
     background-color: #f2f2f2;
-}
-
-.container .ctitle {
-    margin-bottom: 10px;
-}
-
-#account-list>li {
-    padding: 10px;
-    border-radius: 15px;
-    margin: 15px 0;
-    background: #1e7bd2;
-}
-
-#account-list>li:hover {
-    cursor: pointer;
-    filter: brightness(95%);
-}
-
-#account-list li a {
-    text-decoration: none;
-}
-
-#account-list li p {
-    color: white;
-}
-
-#account-list .manage-text {
-    margin-top: 15px;
-    text-decoration: underline;
 }
