@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return securityUtilities.passwordEncoder();
     }
     private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = {
-            "/css/**", "/image/**", "/fonts/**", "/", "/login" };
+            "/css/**", "/image/**", "/fonts/**", "/", "/login", "/api/**", "**/pptransaction/**" };
     private static final String[] ADMIN_MATCHERS = {
             "/dashboard"
     };
@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests().antMatchers("/account").hasAnyRole("MANAGER", "USER")
                 .and()
-                .authorizeRequests().antMatchers("/login", "/resource/**").permitAll()
+                .authorizeRequests().antMatchers("/login", "/resource/**",  "/css/**",  "/api/**").permitAll()
                 .antMatchers("/account*").hasAnyRole("USER", "MANAGER").antMatchers("/dashboard*")
                 .hasAnyRole("MANAGER").anyRequest().authenticated()
                 .and().csrf().ignoringAntMatchers("/h2**/**") // Make H2-Console non-secured; for debug purposes

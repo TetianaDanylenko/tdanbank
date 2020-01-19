@@ -49,7 +49,7 @@ public class Address {
         this.streetAddition = streetAddition;
     }
 
-    public long getHouseNr() {
+    public int getHouseNr() {
         return houseNr;
     }
 

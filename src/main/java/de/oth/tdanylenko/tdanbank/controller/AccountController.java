@@ -48,8 +48,8 @@ public class AccountController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
         }
         model.addAttribute("bankAccount", bankAccount);
-        model.addAttribute("transactionHistory", transaсtionService.getBankAccountTransactionHistory(bankAccount));
-        model.addAttribute("iban", bankAccount.getiban());
+        model.addAttribute("transactionHistory", bankAccount.getTransactionHistory());
+        model.addAttribute("accountsiban", bankAccount.getiban());
         return "account";
     }
 }

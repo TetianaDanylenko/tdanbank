@@ -1,5 +1,6 @@
 package de.oth.tdanylenko.tdanbank.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +31,7 @@ public class User  implements UserDetails {
     private Address address;
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -40,8 +41,12 @@ public class User  implements UserDetails {
     private Collection<Roles> roles;
     private String mail;
     private String phone;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinColumn(name = "bankID", referencedColumnName = "id")
     private Bank bank;
     public User(String firstName, String lastName, String username, String password,

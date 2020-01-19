@@ -4,11 +4,17 @@ import de.oth.tdanylenko.tdanbank.dto.TransactionDTO;
 import de.oth.tdanylenko.tdanbank.entity.Account;
 import de.oth.tdanylenko.tdanbank.entity.Transaction;
 import de.oth.tdanylenko.tdanbank.exceptions.TransactionNotFoundException;
+import de.oth.tdanylenko.tdanbank.repository.AccountRepository;
 import de.oth.tdanylenko.tdanbank.repository.TransactionRepository;
 import de.oth.tdanylenko.tdanbank.service.AccountService;
 import de.oth.tdanylenko.tdanbank.service.TransaсtionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,30 +23,39 @@ import java.util.Optional;
 
 @Controller
 public class TransactionController {
+    private static final Logger log = LogManager.getLogger(DashboardController.class);
    @Autowired
    private final TransactionRepository transactionRepository;
    @Autowired
    private TransaсtionService transactionService;
     @Autowired
     private AccountService accountService;
-
+    @Autowired
+    private AccountRepository accountRepo;
 
     public TransactionController(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
-    @PostMapping("/transaction")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    TransactionDTO addTransaction(@RequestBody final TransactionDTO transactionDto) {
-        return transactionService.save(transactionDto);
+    @RequestMapping(value = "/api/pptransaction/getfunds",  consumes = "application/json", produces =
+            "application/json", method = RequestMethod.POST)
+    public ResponseEntity<TransactionDTO> addTransactionFromPayPal(@RequestBody(required = false) TransactionDTO transactionDto) {
+
+        TransactionDTO test = transactionService.directDebit(transactionDto);
+        log.info("end");
+        log.info(test);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        //responseHeaders.setLocation(location);
+     //   responseHeaders.set("MyResponseHeader", "MyValue");
+        return new ResponseEntity<>(test, HttpStatus.CREATED);
+      //  return new ResponseEntity<String>("Transaction succeded", HttpStatus.OK);
     }
 
-    @RequestMapping("/transaction/{transactionId}")
+    @RequestMapping("/api/pptransaction/{transactionId}")
     public @ResponseBody TransactionDTO getTransaction(@PathVariable final Long transactionId) {
-        final Optional<Transaction> transaction = transactionRepository.findById(transactionId);
-        if (transaction.isPresent()) {
-            return this.transactionService.toDto(transaction.get());
+        Transaction transaction = transactionRepository.getById(transactionId);
+        if (transaction != null) {
+            return this.transactionService.toDto(transaction, true);
         } else throw new TransactionNotFoundException();
     }
 
@@ -51,14 +66,16 @@ public class TransactionController {
     }
 
     @RequestMapping(value = "/transfermoney", method = RequestMethod.POST)
-    public String transferMoney(@RequestParam long to, @RequestParam long from, @RequestParam double amount, @RequestParam String message,
+    public String transferMoney(@RequestParam String receiversIban, @RequestParam String sendersIban, @RequestParam double amount, @RequestParam String tan,
+                                @RequestParam String message,
                                 RedirectAttributes redirectAttributes) {
-        if (amount <= 0) {
+        Account bankAccount = accountRepo.findByAccIbanIgnoreCase(sendersIban);
+        if (amount < 0) {
             redirectAttributes.addAttribute("transferFail", true);
             redirectAttributes.addFlashAttribute("transferFailAmount", "Amount must be more than 0!");
         } else {
-            transactionService.transferMoney(to, from, amount, redirectAttributes);
+            transactionService.transferMoney(receiversIban, sendersIban, amount, tan, message, redirectAttributes);
         }
-        return "redirect:/account/" + from;
+        return "redirect:/account/" + bankAccount.getUser().getUsername();
     }
 }

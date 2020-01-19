@@ -11,17 +11,45 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Account from;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Account to;
     private LocalDateTime timeStamp;
-    @Embedded
-    private Tan TAN;
-    private BigDecimal amount;
+    private String TAN;
+    private double amount;
+    private String reasonForPayment;
     private String currency;
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
+
+    public Transaction(Account from, Account to, LocalDateTime timeStamp, String TAN, double amount, String reasonForPayment, String currency, TransactionStatus status) {
+        this.from = from;
+        this.to = to;
+        this.timeStamp = timeStamp;
+        this.TAN = TAN;
+        this.amount = amount;
+        this.reasonForPayment = reasonForPayment;
+        this.currency = currency;
+        this.status = status;
+    }
+    public Transaction(Account from, LocalDateTime timeStamp, double amount, String reasonForPayment, String currency, TransactionStatus status) {
+        this.from = from;
+        this.timeStamp = timeStamp;
+        this.amount = amount;
+        this.reasonForPayment = reasonForPayment;
+        this.currency = currency;
+        this.status = status;
+    }
+    public Transaction() {
+        super();
+    }
 
     public long getId() {
         return id;
@@ -55,19 +83,27 @@ public class Transaction {
         this.timeStamp = timeStamp;
     }
 
-    public Tan getTAN() {
+    public String getReasonForPayment() {
+        return reasonForPayment;
+    }
+
+    public void setReasonForPayment(String reasonForPayment) {
+        this.reasonForPayment = reasonForPayment;
+    }
+
+    public String getTAN() {
         return TAN;
     }
 
-    public void setTAN(Tan TAN) {
+    public void setTAN(String TAN) {
         this.TAN = TAN;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -85,5 +121,20 @@ public class Transaction {
 
     public void setStatus(TransactionStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", from=" + from +
+                ", to=" + to +
+                ", timeStamp=" + timeStamp +
+                ", TAN='" + TAN + '\'' +
+                ", amount=" + amount +
+                ", reasonForPayment='" + reasonForPayment + '\'' +
+                ", currency='" + currency + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

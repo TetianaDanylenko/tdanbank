@@ -5,6 +5,7 @@
     <title>Bank Account</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
     <link rel="stylesheet" type="text/css" th:href="@{/static/main.css}">
+
     <style>
         #balance-text {
             margin: 25px 0;
@@ -15,48 +16,70 @@
 <body>
 <main>
     <!-- Account holder info -->
-    <h2 th:inline="text">Bank account: [[${iban}]]</h2>
+    <h2 th:inline="text">Bank account: [[${accountsiban}]]</h2>
     <p th:inline="text">Owner: [[${bankAccount.user.username}]]</p>
     <p th:inline="text" id="balance-text">Account balance: [[${bankAccount.balance}]]€</p>
     <!-- Overview -->
 
     <!-- Money transfer -->
     <div class="container">
-        <h3 class="title">Transfer funds</h3>
+        <h3 class="title">Transfer money</h3>
         <p class="form-error main" th:if="${(param.transferFail != null) and (param.transferFail[0] == 'true')}">Transfer failed</p>
         <form th:action="@{/transfermoney}" th:method="POST">
             <div>
                 <label for="to">Transfer to</label>
-                <input type="text" name="receiver" required />
+                <input type="text" name="receiversIban" required />
             </div>
-            <input type="hidden" name="idFrom" th:value="${bankAccount.id}" />
+            <input type="hidden" name="sendersIban" th:value="${accountsiban}" />
             <div>
-                <label for="amount">Amount</label>
-                <input type="number" name="amount" min=".01" step=".01" required />
-                <p class="form-error" th:if="${transferFailAmount != null}" th:text="${transferFailAmount}"></p>
+            <label for="amount">Amount</label>
+            <input type="number" name="amount" min=".01" step=".01" required />
+            <p class="form-error" th:if="${transferFailAmount != null}" th:text="${transferFailAmount}"></p>
+        </div>
+            <div>
+                <label for="tan">TAN</label>
+                <input type="text" name="tan" required />
+            </div>
+            <div>
+                <label for="message">Reason for payment</label>
+                <input type="text" name="message" required />
             </div>
             <button type="submit">Submit</button>
         </form>
     </div>
     <!-- Update balance -->
-    <div class="container">
-        <h3 class="title">Update balance</h3>
-        <form th:action="@{/updatebankaccountbalance}" th:method="POST">
-            <div>
-                <label for="balance">Balance</label>
-                <input type="number" name="balance" min="0" step=".01" required />
-            </div>
-            <input type="hidden" name="bankAccountId" th:value="${bankAccount.id}" />
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+<!--    <div class="container">
+    <h3 class="title">Update balance</h3>
+    <form th:action="@{/updatebankaccountbalance}" th:method="POST">
+        <div>
+            <label for="balance">Balance</label>
+            <input type="number" name="balance" min="0" step=".01" required />
+        </div>
+        <input type="hidden" name="bankAccountId" th:value="${bankAccount.id}" />
+        <button type="submit">Submit</button>
+    </form>
+</div>-->
 
     <!-- Transaction history -->
     <div class="container">
-        <h3 class="title">Transaction history</h3>
-
+    <h3 class="title">Transaction history</h3>
+</div>
+    <div class="row">
+        <form th:action="@{/logout}" method="POST">
+            <button type="submit">LOGOUT</button>
+        </form>
     </div>
 
+    <div class="w3-container">
+        <p th:if="${bankAccount.transactionHistory.size()} == 0">No transaction were found :/</p>
+        <ul id="users-list" class="w3-ul w3-hoverable">
+            <li th:each="transaction : ${transactionHistory}">
+                <p class="user-title" th:inline="text">Transaction ID: [[${transaction.id}]], Amount:  [[${transaction.amount}]], Currency:  [[${transaction.amount}]], Status :  [[${transaction.status}]] </p>
+                <p class="user-title" th:inline="text">Time: [[${transaction.timeStamp}]]</p>
+                <p class="user-title" th:inline="text">From: [[${transaction.from.id}]]</p>
+            </li>
+        </ul>
+    </div>
 </main>
 </body>
 </html>

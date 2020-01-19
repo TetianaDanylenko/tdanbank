@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/formStyle.css" th:href="@{/css/formStyle.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Update user</title>
     <style>
+        .form-style-9{
+        max-width: 1000px;
+        background: #FAFAFA;
+        padding: 30px;
+        margin: 50px auto;
+        box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+        border-radius: 10px;
+        border: 6px solid #305A72;
     </style>
 </head>
 <body>
@@ -14,57 +25,72 @@
 <div class="container">
     <div class="row">
         <div class="column">
-            <h3 class="ctitle">Create a new user</h3>
-            <form th:action="@{/dashboard/create/user}" th:method="POST">
-                <div>
+            <h3 class="ctitle">Update user</h3>
+            <form class="form-style-9" th:action="@{/dashboard/updateuserinformation}" th:method="POST">
+                <ul>
+                    <li>
                     <label for="firstName">Vorname</label>
-                    <input type="text" name="firstName"/>
-                </div>
-                <div>
+                    <input type="text" name="fname" th:value="${user.firstName}"/>
                     <label for="lastName">Nachname</label>
-                    <input type="text" name="lastName"/>
-                </div>
-                <div>
-                    <label for="username">Username</label>
-                    <input type="text" name="usersName"/>
-                </div>
-                <div>
-                    <label for="phone">Handynummer</label>
-                    <input type="text" name="phone"/>
-                </div>
-                <div>
+                    <input type="text"  name="lname" th:value="${user.lastName}"/>
+                    </li>
+                        <li>
+                    <label for="usersname" >Username</label>
+                    <input type="text" name="userToUpdate" th:value="${user.username}" readonly/>
+                    <label for="phone" >Handynummer</label>
+                    <input type="text" name="phone" th:value="${user.phone}" />
+                        </li>
+                    <li>
+                        <label for="mail" >Mail</label>
+                        <input type="text" style="width: 80%" name="mail" th:value="${user.mail}" />
+                    </li>
+                    <li>
                     <label for="dateOfBirth">Geburtsdatum</label>
-                    <input type="date" name="dateOfBirth" required />
-                </div>
-                <div>
-                    <label for="password">Passwort</label>
-                    <input type="text" name="password"/>
-                    <button type="submit">Submit</button>
-                </div>
-                <div>
+                    <input type="date" name="dateOfBirth"  th:field="${user.dateOfBirth}" readonly />
                     <label for="street">Straße</label>
-                    <input type="text" name="street"/>
-                </div>
-                <div>
+                    <input type="text" name="street" th:value="${user.address.street}" />
+                    </li>
+
+                    <li>
                     <label for="streetAddition">Straße(optional)</label>
-                    <input type="text" name="streetAddition"/>
-                </div>
-                <div>
+                    <input type="text" name="streetaddition" th:value="${user.address.streetAddition}"/>
+
                     <label for="houseNr">Hausnr</label>
-                    <input type="number" name="houseNr"/>
-                </div>
-                <div>
+                    <input type="number" name="houseNr" th:value="${user.address.houseNr}"/>
+                    </li>
+                    <li>
+
                     <label for="city">Stadt</label>
-                    <input type="text" name="city"/>
-                </div>
-                <div>
-                    <label for="zip">ZIP</label>
-                    <input type="text" name="zip"/>
-                </div>
+                    <input type="text" name="city" th:value="${user.address.city}"/>
+                <label for="zip">ZIP</label>
+                <input type="text" name="zip" th:value="${user.address.zip}"/>
+
+                    </li>
+                    <li>
+                    <label th:if="${bankaccount} != null" for="iban">IBAN</label>
+                    <input th:if="${bankaccount} != null" type="text" name="iban" th:field="${bankaccount.iban}" readonly />
+
+                    <label th:if="${bankaccount} != null" for="balance">Balance</label>
+                    <input th:if="${bankaccount} != null" type="number" name="balance" th:value="${bankaccount.balance} " readonly/>
+
+                    </li>
+                    </ul>
+                <div class="row button">
+                    <button type="submit">Update</button> </div>
             </form>
+            <div class="row button">
+                <form th:action="@{/dashboard/userroletoadmin}" method="POST">
+                <input type="hidden" name="usertoadmin" th:value="${user.username}"/>
+                <button  th:if="${user} != null" th:action="@{/dashboard/userroletoadmin}" method="POST" type="submit">Admin role zuweisen</button> </form>
+            </div>
+            <div class="row button">
+                <form th:action="@{/dashboard/closeaccount}" method="POST">
+                    <input type="hidden" name="usertodelete" th:value="${user.username}"/>
+                    <button  th:if="${bankaccount} != null" th:action="@{/dashboard/closeaccount}" method="POST" type="submit">Konto schliessen</button>
+                </form>
+            </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>

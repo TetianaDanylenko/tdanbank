@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Directory</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/formStyle.css" th:href="@{/css/formStyle.css}" />
     <style>
     </style>
 </head>
@@ -11,40 +14,143 @@
 <header class="header">
     <h1>Manager's panel</h1>
 </header>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="row setting_id">
-                <h4>SETTINGS</h4>
-            </div>
-            <div class="list-group">
-                <a href="/dashboard/update/user" class="list-group-item list-group-item-action">Update user's information</a>
-                <a href="/dashboard/create/account" class="list-group-item list-group-item-action">Create account</a>
-                <a href="/dashboard/delete/account" class="list-group-item list-group-item-action">Delete account</a>
-                <a href="/dashboard/delete/user" class="list-group-item list-group-item-action">Delete user</a>
-            </div>
-        </div>
-    </div>
+<div class="row">
+    <form th:action="@{/logout}" method="POST">
+        <button type="submit">LOGOUT</button>
+    </form>
+    <h3> </h3>
+</div>
+
+<button onclick="myFunction('accordion1')" class="w3-btn w3-block w3-teal w3-left-align">Create account</button>
+<div id="accordion1" class="w3-container w3-hide">
+    <div class="w3-container w3-cell">
     <div class="row">
         <h3 class="ctitle">Create a new bank account</h3>
-        <p class="form-error main" th:if="${(param.bankAccountCreateFail != null) and (param.bankAccountCreateFail[0] == 'true')}">Bank acount
+        <p class="form-error main" th:if="${(param.bankAccountCreateFail != null) and (param.bankAccountCreateFail[0] == 'true')}">Bank account
             creation did not succeed.</p>
-        <form th:action="@{/dashboard/create/account}" th:method="POST">
+        <form class="form-style-9" th:action="@{/dashboard/create/account}" th:method="POST">
             <div>
-                <label for="iban">IBAN</label>
-                <input type="text" name="iban" required />
-                <p class="form-error" th:if="${bankAccountCreateFailIban != null}" th:text="${bankAccountCreateFailIban}"></p>
+                <label class="w3-text-teal" for="username">Username</label>
+                <input class="w3-input w3-border w3-light-grey" type="text" name="ownerUsername"/>
+
             </div>
             <div>
-                <label for="balance">Balance</label>
-                <input type="number" name="balance" min="0" step=".01" required />
+                <label class="w3-text-teal" for="iban">IBAN</label>
+                <input class="w3-input w3-border w3-light-grey" type="text" name="iban" required />
             </div>
-            <input type="text" name="ownerUsername"/>
+            <div>
+                <label class="w3-text-teal" for="balance">Balance</label>
+                <input class="w3-input w3-border w3-light-grey" type="number" name="balance" min="0" step=".01" required />
+            </div>
+                <div>
+                    <p> </p>
+                </div>
             <button type="submit">Submit</button>
         </form>
+        <h3> </h3>
     </div>
-
-
+    </div>
 </div>
+<button onclick="myFunction('accordion2')" class="w3-btn w3-block w3-pale-blue w3-left-align">Create a new user</button>
+<div id="accordion2" class="w3-container w3-hide">
+    <div class="w3-container w3-cell">
+        <h3 class="ctitle">Create a new user</h3>
+        <p class="form-error main" th:if="${(param.newUsercreateFails != null) and (param.newUsercreateFails[0] == 'true')}">New user
+            creation did not succeed.</p>
+        <div class="row">
+            <form class="form-style-9" th:action="@{/dashboard/create/user}" th:method="POST">
+                <div class="w3-row-padding">
+                    <div class="w3-third">
+                        <label class="w3-text-teal" for="firstName">Vorname</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" name="firstname"/>
+                    </div>
+                    <div class="w3-third">
+                        <label class="w3-text-teal" for="lastName">Nachname</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" name="lastname"/>
+                    </div>
+                    <div class="w3-third">
+                        <label class="w3-text-teal" for="username">Username</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" name="username"/>
+                    </div>
+                </div>
+                    <div class="w3-row-padding">
+                        <div class="w3-half">
+                            <label class="w3-text-teal" for="phone">Handynummer</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="phone"/>
+                        </div>
+                        <div class="w3-half">
+                            <label class="w3-text-teal" for="dateOfBirth">Geburtsdatum</label>
+                            <input class="w3-input w3-border w3-light-grey" type="date" name="dateOfBirth" required />
+                        </div>
+                    </div>
+
+                    <div class="w3-row-padding">
+                        <div class="w3-half">
+                        <label class="w3-text-teal" for="mail">Mail</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" name="mail"/>
+                        </div>
+                        <div class="w3-half">
+                            <label class="w3-text-teal" for="password">Passwort</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="password"/>
+                        </div>
+                    </div>
+                    <div class="w3-row-padding">
+                        <div class="w3-half">
+                            <label class="w3-text-teal" for="street">Straße</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="street"/>
+                        </div>
+                        <div class="w3-half">
+                            <label class="w3-text-teal" for="streetAddition">Straße(optional)</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="streetAddition"/>
+                        </div>
+                    </div>
+                    <div class="w3-row-padding">
+                        <div class="w3-third">
+                            <label class="w3-text-teal" for="houseNr">Hausnr</label>
+                            <input class="w3-input w3-border w3-light-grey" type="number" name="houseNr"/>
+                        </div>
+                        <div class="w3-third">
+                            <label class="w3-text-teal" for="city">Stadt</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="city"/>
+                        </div>
+                        <div class="w3-third">
+                            <label class="w3-text-teal" for="zip">ZIP</label>
+                            <input class="w3-input w3-border w3-light-grey" type="text" name="zip"/>
+                        </div>
+                    </div>
+                <h3> </h3>
+                <button type="submit">Submit</button>
+                <h3> </h3>
+            </form>
+        </div>
+    </div>
+</div>
+<button onclick="myFunction('accordion3')" class="w3-btn w3-block w3-teal w3-left-align">Load all users</button>
+<div id="accordion3" class="w3-container w3-hide">
+    <h4>Users</h4>
+    <p>Click to manage user (edit/delete)</p>
+    <div class="w3-container">
+        <p th:if="${allusers.size()} == 0">No users were found :/</p>
+        <ul id="users-list" class="w3-ul w3-hoverable">
+            <li th:each="user : ${allusers}">
+                <p class="user-title" th:inline="text">Username: [[${user.username}]]</p>
+                <a th:href="@{/dashboard/manageuser/{username}(username=${user.username})}">
+                    <p class="manage-text">Click to manage</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+<script>
+    function myFunction(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>
 </body>
 </html>

@@ -6,71 +6,57 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class TransactionDTO {
-    private Long id;
-    private BigDecimal amount;
-    private String senderMail;
-    private String receiverMail;
-    private LocalDateTime timeStamp;
-    private TransactionStatus status;
+    private double amount;
+    private String senderIBAN;
+    private String reasonForPayment;
+    private Boolean isSuccessful;
 
     public TransactionDTO() {
         super();
     }
 
-    public TransactionDTO(Long id, BigDecimal amount, String senderMail, String receiverMail, LocalDateTime timeStamp, TransactionStatus status) {
-        this.id = id;
+    public TransactionDTO(double amount, String senderIBAN, String receiverIBAN, String reasonForPayment) {
         this.amount = amount;
-        this.senderMail = senderMail;
-        this.receiverMail = receiverMail;
-        this.timeStamp = timeStamp;
-        this.status = status;
+        this.senderIBAN = senderIBAN;
+        this.reasonForPayment = reasonForPayment;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public TransactionDTO(double amount, String senderIBAN, String reasonForPayment, Boolean isSuccessful) {
+        this.amount = amount;
+        this.senderIBAN = senderIBAN;
+        this.reasonForPayment = reasonForPayment;
+        this.isSuccessful = isSuccessful;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public Boolean getSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(Boolean successful) {
+        isSuccessful = successful;
+    }
+
+    public String getSenderIBAN() {
+        return senderIBAN;
+    }
+
+    public void setSenderIBAN(String senderIBAN) {
+        this.senderIBAN = senderIBAN;
+    }
+
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public void setSenderMail(String senderMail) {
-        this.senderMail = senderMail;
-    }
-
-    public void setReceiverMail(String receiverMail) {
-        this.receiverMail = receiverMail;
-    }
-
-    public void setTimeStamp(LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public String getSenderMail() {
-        return senderMail;
+    public String getReasonForPayment() {
+        return reasonForPayment;
     }
 
-    public String getReceiverMail() {
-        return receiverMail;
-    }
-
-    public LocalDateTime getTimeStamp() {
-        return timeStamp;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
+    public void setReasonForPayment(String reasonForPayment) {
+        this.reasonForPayment = reasonForPayment;
     }
 }

@@ -3,8 +3,6 @@ package de.oth.tdanylenko.tdanbank.entity;
 import de.oth.tdanylenko.tdanbank.enums.AccountStatus;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,14 +10,15 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL
+    )
     @JoinColumn(name = "userID", referencedColumnName = "id")
     private User user;
     private double balance;
     private String currency;
     @ElementCollection
-    private List<Tan> tanList;
-    private String iban;
+    private List<String> tanList;
+    private String accIban;
     @ElementCollection
     private List<Transaction> transactionHistory;
     @Enumerated(EnumType.STRING)
@@ -28,12 +27,12 @@ public class Account {
         super();
     }
 
-    public Account(User user, double balance, String currency, List<Tan> tanList, String iban, List<Transaction> transactionHistory, AccountStatus status) {
+    public Account(User user, double balance, String currency, List<String> tanList, String accIban, List<Transaction> transactionHistory, AccountStatus status) {
         this.user = user;
         this.balance = balance;
+        this.accIban = accIban;
         this.currency = currency;
         this.tanList = tanList;
-        this.iban = iban;
         this.transactionHistory = transactionHistory;
         this.status = status;
     }
@@ -70,20 +69,20 @@ public class Account {
         this.balance = balance;
     }
 
-    public List<Tan> getTanList() {
+    public List<String> getTanList() {
         return tanList;
     }
 
-    public void setTanList(List<Tan> tanList) {
+    public void setTanList(List<String> tanList) {
         this.tanList = tanList;
     }
 
     public String getiban() {
-        return iban;
+        return accIban;
     }
 
     public void setiban(String iban) {
-        this.iban = iban;
+        this.accIban = iban;
     }
 
     public List<Transaction> getTransactionHistory() {

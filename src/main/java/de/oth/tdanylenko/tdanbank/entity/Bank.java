@@ -12,5 +12,4 @@ public class Bank {
     private String name;
     @ElementCollection
     private List<BusinessProducts> businessProducts;
-
 }

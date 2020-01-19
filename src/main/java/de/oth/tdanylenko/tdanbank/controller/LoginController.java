@@ -50,7 +50,7 @@ private ArrayList <RoleTypes> test;
         model.addAttribute("error", "true");
         return "error";
     }
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout(SessionStatus session) {
         SecurityContextHolder.getContext().setAuthentication(null);
         session.setComplete();
@@ -71,12 +71,17 @@ private ArrayList <RoleTypes> test;
         log.info(collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_MANAGER)));
  if(collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_MANAGER))) {
      return "redirect:/dashboard";
- } else if (collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_USER))) {
-     return "redirect:/account/" + accountRepo.getAccountByUser(java.util.Optional.of(loggedInUser)).getUser().getUsername();
- } else
-     return "redirect:/account";
+ } else if (collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_USER)) && accountRepo.getAccountByUser(loggedInUser)!= null) {
+     return "redirect:/account/" + accountRepo.getAccountByUser(loggedInUser).getUser().getUsername();
+ } else {
+     log.info("account not found");
+     return "redirect:/accountnotfound";
+ }
     }
-
+    @RequestMapping(value = "/accountnotfound", method = RequestMethod.GET)
+    public String accountNotFound() {
+        return "accountnotfound";
+    }
     private void validatePrinciple(Object principal) {
         if (!(principal instanceof User)) {
             throw new  IllegalArgumentException("Principal can not be null!");
