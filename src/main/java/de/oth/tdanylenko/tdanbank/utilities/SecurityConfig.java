@@ -22,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    @Qualifier("labresources")
+    @Qualifier("userdetails")
     private UserDetailsService userSecurityService;
     @Autowired
     private SecurityUtilities securityUtilities;

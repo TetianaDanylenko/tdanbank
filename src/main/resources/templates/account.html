@@ -25,6 +25,11 @@
         <form th:action="@{/logout}" method="POST">
             <button type="submit">LOGOUT</button>
         </form>
+    <p>  </p>
+    <p class="manage-user-info" th:inline="text">Manage my account information</p>
+    <a th:href="@{/account/manage/userinformation/{username}(username=${bankAccount.user.username})}">
+        <p class="manage-text">Click to manage</p>
+    </a>
     <!-- Overview -->
 <div class="row">
     <div class="col-1">
@@ -55,6 +60,19 @@
             </div>
             <button type="submit">Submit</button>
         </form>
+        <p>  </p>
+        <div class="row">
+                <!-- Available tans -->
+                <h3 class="title">TAN LIST</h3>
+                <div class="w3-container">
+                    <p th:if="${tanlist.size()} == 0">No tans were found :/</p>
+                    <ul id="tans-list" class="w3-ul w3-hoverable">
+                        <li th:each="tan : ${tanlist}">
+                            <p class="user-title" th:inline="text">[[${tan}]] </p>
+                        </li>
+                    </ul>
+                </div>
+        </div>
 </div>
     </div>
     <div class="col-6">
@@ -66,8 +84,7 @@
             <li th:each="transaction : ${transactionHistory}">
                 <p class="user-title" th:inline="text">Transaction ID: [[${transaction.id}]], Amount:  [[${transaction.amount}]], Currency:  [[${transaction.amount}]], Status :  [[${transaction.status}]] </p>
                 <p class="user-title" th:inline="text">Time: [[${transaction.timeStamp}]]</p>
-                <p class="user-title" th:inline="text">From: [[${transaction.from.id}]]</p>
-                <p th:if="${transaction.to} != null" class="user-title" th:inline="text"> To: [[${transaction.to.id}]]</p>
+                <p class="user-title" th:inline="text">Transaction [[${transaction.reasonForPayment}]]</p>
             </li>
         </ul>
     </div>

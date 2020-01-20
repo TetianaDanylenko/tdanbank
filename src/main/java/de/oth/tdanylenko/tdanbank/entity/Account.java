@@ -10,8 +10,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL
-    )
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "userID", referencedColumnName = "id")
     private User user;
     private double balance;

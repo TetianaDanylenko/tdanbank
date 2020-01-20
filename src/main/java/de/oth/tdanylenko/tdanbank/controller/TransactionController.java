@@ -24,17 +24,14 @@ import java.util.Optional;
 @Controller
 public class TransactionController {
     private static final Logger log = LogManager.getLogger(DashboardController.class);
-   @Autowired
-   private final TransactionRepository transactionRepository;
-   @Autowired
+    @Autowired
    private TransaсtionService transactionService;
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private AccountRepository accountRepo;
 
-    public TransactionController(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
+    public TransactionController(TransaсtionService transactionService, AccountService accountService) {
+        this.transactionService = transactionService;
+        this.accountService = accountService;
     }
 
     @RequestMapping(value = "/api/pptransaction/getfunds",  consumes = "application/json", produces =
@@ -46,7 +43,7 @@ public class TransactionController {
 
     @RequestMapping("/api/pptransaction/{transactionId}")
     public @ResponseBody TransactionDTO getTransaction(@PathVariable final Long transactionId) {
-        Transaction transaction = transactionRepository.getById(transactionId);
+        Transaction transaction = transactionService.loadTransactionById(transactionId);
         if (transaction != null) {
             return this.transactionService.toDto(transaction, true);
         } else throw new TransactionNotFoundException();
@@ -62,7 +59,7 @@ public class TransactionController {
     public String transferMoney(@RequestParam String receiversIban, @RequestParam String sendersIban, @RequestParam double amount, @RequestParam String tan,
                                 @RequestParam String message,
                                 RedirectAttributes redirectAttributes) {
-        Account bankAccount = accountRepo.findByAccIbanIgnoreCase(sendersIban);
+        Account bankAccount = accountService.loadAccountByIban(sendersIban);
         if (amount < 0) {
             redirectAttributes.addAttribute("transferFail", true);
             redirectAttributes.addFlashAttribute("transferFailAmount", "Amount must be more than 0!");
