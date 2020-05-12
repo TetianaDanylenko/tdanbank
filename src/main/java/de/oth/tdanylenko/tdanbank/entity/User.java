@@ -19,19 +19,16 @@ public class User  implements UserDetails {
     private long id;
     private String firstName;
     private String lastName;
-
-
-    public User() {
-        super();
-    }
-
     private String username;
     private String password;
     @Embedded
     private Address address;
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -49,8 +46,13 @@ public class User  implements UserDetails {
     })
     @JoinColumn(name = "bankID", referencedColumnName = "id")
     private Bank bank;
+
+    public User() {
+       super();
+    }
+
     public User(String firstName, String lastName, String username, String password,
-                Address address, Collection<Roles> roles, String mail, String phone, Date dateOfBirth) {
+                Address address, Collection<Roles> roles, String mail, String phone, Date dateOfBirth, Bank bank) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -60,21 +62,23 @@ public class User  implements UserDetails {
         this.mail = mail;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
+        this.bank = bank;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + id +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + address.toString() +
-                ", role=" + roles +
+                ", address=" + address +
+                ", roles=" + roles +
                 ", mail='" + mail + '\'' +
                 ", phone='" + phone + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
+                ", bank=" + bank +
                 '}';
     }
 
@@ -102,13 +106,6 @@ public class User  implements UserDetails {
         this.lastName = lastName;
     }
 
-    public String getLogin() {
-        return username;
-    }
-
-    public void setLogin(String username) {
-        this.username = username;
-    }
 
     public Address getAddress() {
         return address;
@@ -148,6 +145,26 @@ public class User  implements UserDetails {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     @Override

@@ -74,7 +74,6 @@ private ArrayList <RoleTypes> test;
  } else if (collect.contains(RoleTypes.parseRoleValue(RoleTypes.ROLE_USER)) && accountRepo.getAccountByUser(loggedInUser)!= null) {
      return "redirect:/account/" + accountRepo.getAccountByUser(loggedInUser).getUser().getUsername();
  } else {
-     log.info("account not found");
      return "redirect:/accountnotfound";
  }
     }

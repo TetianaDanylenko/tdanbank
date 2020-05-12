@@ -12,6 +12,7 @@ import de.oth.tdanylenko.tdanbank.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Scope("singleton")
 public class TransaсtionService implements TransactionServiceIF{
     private static final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
     @Autowired
@@ -33,6 +35,14 @@ public class TransaсtionService implements TransactionServiceIF{
     private TransactionRepository transactionRepository;
     @Autowired
     private AccountService accountService;
+
+    public TransaсtionService(AccountRepository accountRepository, TransactionRepository transactionRepository,
+                              AccountService accountService) {
+        this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
+        this.accountService = accountService;
+    }
+
     public TransactionDTO toDto(Transaction transaction, Boolean isSuccessful){
         TransactionDTO dto = new TransactionDTO();
         dto.setAmount(transaction.getAmount());
@@ -75,9 +85,9 @@ public class TransaсtionService implements TransactionServiceIF{
         LocalDateTime rightNow = LocalDateTime.now();
         String actionMessage = sender.getUser().getUsername() + " transferred " + amount + "€ from " + sender.getiban() + " ("
                 + sender.getUser().getUsername() + ") to " + recipient.getiban() + " (" + recipient.getUser().getUsername() + ")";
-        Transaction transaction = transactionRepository.save(new Transaction(sender, recipient, rightNow, tanToUse, amount, actionMessage, "EUR", TransactionStatus.SUCCEEDED ));
+        log.info(actionMessage);
+        Transaction transaction = transactionRepository.save(new Transaction(sender, recipient, rightNow, tanToUse, amount, message, "EUR", TransactionStatus.SUCCEEDED ));
         accountService.updateBalance(sender.getId(), (sender.getBalance() - amount));
-      //  sender.setBalance(sender.getBalance() - amount);
         accountService.updateBalance(recipient.getId(), (recipient.getBalance() + amount));
         this.addTransactionToHistory(transaction, sender, recipient);
     }
@@ -102,8 +112,6 @@ public class TransaсtionService implements TransactionServiceIF{
         }
         accountRepository.save(sender);
     }
-
-
 
     @Override
     public TransactionDTO directDebit(TransactionDTO transactionDto) throws TransactionServiceException {

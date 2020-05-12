@@ -22,7 +22,7 @@
 </div>
 
 <button onclick="myFunction('accordion1')" class="w3-btn w3-block w3-teal w3-left-align">Create account</button>
-<div id="accordion1" class="w3-container w3-hide">
+<div id="accordion1" class="w3-container w3-show">
     <div class="w3-container w3-cell">
     <div class="row">
         <h3 class="ctitle">Create a new bank account</h3>
@@ -51,8 +51,8 @@
     </div>
     </div>
 </div>
-<button onclick="myFunction('accordion2')" class="w3-btn w3-block w3-pale-blue w3-left-align">Create a new user</button>
-<div id="accordion2" class="w3-container w3-hide">
+<button onclick="myFunction('accordion2')" class="w3-btn w3-block w3-teal w3-left-align">Create a new user</button>
+<div id="accordion2" class="w3-container w3-show">
     <div class="w3-container w3-cell">
         <h3 class="ctitle">Create a new user</h3>
         <p class="form-error main" style="color: red" th:if="${(param.newUsercreateFails != null) and (param.newUsercreateFails[0] == 'true')}">New user
@@ -126,7 +126,7 @@
     </div>
 </div>
 <button onclick="myFunction('accordion3')" class="w3-btn w3-block w3-teal w3-left-align">Load all users</button>
-<div id="accordion3" class="w3-container w3-hide">
+<div id="accordion3" class="w3-container w3-show">
     <h4>Users</h4>
     <p>Click to manage user (edit/delete)</p>
     <div class="w3-container">
@@ -136,6 +136,25 @@
                 <p class="user-title" th:inline="text">Username: [[${user.username}]]</p>
                 <a th:href="@{/dashboard/manageuser/{username}(username=${user.username})}">
                     <p class="manage-text">Click to manage</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+<button onclick="myFunction('accordion4')" class="w3-btn w3-block w3-teal w3-left-align">Manage business products</button>
+<div id="accordion4" class="w3-container w3-show">
+    <p class="form-error main" style="color: red" th:if="${(param.serviceUnavailable != null) and (param.serviceUnavailable[0] == 'true')}">Service is temporary unavailable.</p>
+    <p class="form-error main" style="color: green" th:if="${(param.serviceAnswered != null) and (param.serviceAnswered[0] == 'true')}">Product was added to the market place.</p>
+    <h4>Business products</h4>
+    <p>Click to post product to market place</p>
+    <div class="w3-container">
+        <p th:if="${allproducts.size()} == 0">No business products were found :/</p>
+        <ul id="" class="w3-ul w3-hoverable">
+            <li th:each="product : ${allproducts}">
+                <p class="user-title" th:inline="text">Product: [[${product.name}]]</p>
+                <a th:href="@{/dashboard/managebusinessproduct/{prodid}(prodid=${product.id})}">
+                    <p class="manage-text">Click to post business product to market place</p>
                 </a>
             </li>
         </ul>

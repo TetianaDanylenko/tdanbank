@@ -20,12 +20,18 @@
 </head>
 <body>
 <header class="header">
-    <h1>My account</h1>
+    <h1>My account: Update user information form</h1>
 </header>
+<form th:action="@{/account/back}" th:method="POST">
+    <input type="hidden" name="usertoreturn" th:value="${user.username}"/>
+    <div class="row">
+    <button type="submit">Back</button> </div>
+</form>
 <div class="container">
     <div class="row">
         <div class="column">
-            <h3 class="ctitle">Update user</h3>
+            <p class="form-error main" style="color: green" th:if="${(param.ownInfoUpdated != null) and (param.ownInfoUpdated[0] == 'true')}">Update
+                creation did succeed.</p>
             <form class="form-style-9" th:action="@{/account/updateuserinformation}" th:method="POST">
                 <ul>
                     <li>

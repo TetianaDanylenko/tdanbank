@@ -22,10 +22,16 @@
 <header class="header">
     <h1>Manager's panel</h1>
 </header>
+<form th:action="@{/dashboard/back}" th:method="POST">
+    <div class="row">
+        <button type="submit">Back</button> </div>
+</form>
 <div class="container">
     <div class="row">
         <div class="column">
             <h3 class="ctitle">Update user</h3>
+            <p class="form-error main" style="color: green" th:if="${(param.infoUpdated != null) and (param.infoUpdated[0] == 'true')}">Update
+                creation did succeed.</p>
             <form class="form-style-9" th:action="@{/dashboard/updateuserinformation}" th:method="POST">
                 <ul>
                     <li>

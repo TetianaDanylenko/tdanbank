@@ -2,11 +2,7 @@ package de.oth.tdanylenko.tdanbank.controller;
 
 import de.oth.tdanylenko.tdanbank.entity.Account;
 import de.oth.tdanylenko.tdanbank.entity.User;
-import de.oth.tdanylenko.tdanbank.repository.AccountRepository;
-import de.oth.tdanylenko.tdanbank.repository.UserRepository;
 import de.oth.tdanylenko.tdanbank.service.AccountService;
-import de.oth.tdanylenko.tdanbank.service.AccountServiceIF;
-import de.oth.tdanylenko.tdanbank.service.TransaсtionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +22,11 @@ public class AccountController {
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String getAccountPage(Model model) {
-        log.info("test");
         return "account";
     }
 
     @GetMapping("/account/{username}")
     public String viewUserAccount(@PathVariable String username, Model model) {
-        log.info("entered accountcontroller");
         Account bankAccount = accountService.loadAccountByUsersUsernameCustomErrorHandling(username);
         if (bankAccount == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
@@ -61,5 +55,10 @@ public class AccountController {
         model.addAttribute("user", user);
         model.addAttribute("bankaccount", account);
         return "manageownusersaccount";
+    }
+    @RequestMapping(value ="/account/back", method = RequestMethod.POST)
+    public String redirectBackToUser (@RequestParam String usertoreturn)
+    {
+        return "redirect:/account/" + usertoreturn;
     }
 }
